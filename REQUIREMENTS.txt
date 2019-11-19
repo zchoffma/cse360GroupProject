@@ -1,0 +1,32 @@
+****************************
+*   CSE 360 Team Project   *
+****************************
+
+General Concept:   Input text file --> Processing --> Formatted File output (in a new file)
+
+Gui:  
+    -load file --> loads file and processes the file 
+    -save as --> save the output file as specified name 
+    -error log --> display any errors the file may have 
+    -preview --> display the formatted text file 
+
+
+Flags: Flags operate on a toggle; will be givin on their own lines at the beginning of the line 
+
+    default (no flags): 80 characters per line, left justified, merge input lines up to and including 80 characters per line. 
+    -r right justify 
+    -c center(right and left justified)
+    -l left justified
+    -t centered, no justification  (outputs the next line in 80 characters equally spaced no matter what;  i.e.  It       may       look      like     this)
+
+    -d double space 
+    -s single space (default) 
+
+    -i indent first line (5 spaces) 
+    -b indent multiple lines (10 spaces) 
+
+    -2 Two columns, 35 chars / 10 chars / 35 chars  **cant be indented, can have right justification
+    -1 Normal 
+
+    -e Blank line (Not a line of spaces)  **carry current flag 
+
