@@ -4,6 +4,8 @@
  * Date: 12/2/19                                                           
  * Description:                                                            
  *       FILE INCOMPLETE. THIS IS THE MAIN DRIVER FOR THE FORMATTING CLASS
+ * 
+ *      CAN ASSUME ONLY VALID FLAGS, FLAGS ONLY ON OWN LINE AND THATS IT
  *                                                              
  ***************************************************************************/
 
@@ -15,7 +17,7 @@ import java.io.*;
 
 public class FileFormatter{
      //All flags
-     enum JustificationFlags{R, C, L, T;}
+     enum JustificationFlags{R, C, L, T;} 
      enum SpacingFlags{D, S;}
      enum IndentationFlags{I, B, N;}
      enum ColumnFlags{ONE, TWO;}
@@ -23,15 +25,15 @@ public class FileFormatter{
     private File fo;
     private FileReader fr;
     private BufferedReader br;
-    private StringBuffer outputFileBuffer;  //This is the file write 
-    private String line; 
-    private String[] currentWordBuffer;   
-    private String formattedLine;
-    private JustificationFlags currentJustFlag;
-    private SpacingFlags currentSpaceFlag;
-    private IndentationFlags currentIndentFlag;
-    private ColumnFlags currentColumnFlag;
-    private int MAX_LINE_LENGTH = 80;
+    private StringBuffer outputFileBuffer;  //This is the file write buffer
+    private String line; //original input line
+    private String[] currentWordBuffer; //words between flags (everything in this buffer has the same flags)
+    private String formattedLine;  //the 80 char line that will be added to the output file buffer
+    private JustificationFlags currentJustFlag;  //enum for current flags
+    private SpacingFlags currentSpaceFlag;      //enum for flags
+    private IndentationFlags currentIndentFlag;  //enum for flags
+    private ColumnFlags currentColumnFlag;   //enum for flags
+    private int MAX_LINE_LENGTH = 80;   //constant max line length 
     
 
     public FileFormatter(String filePath){
@@ -71,7 +73,7 @@ public class FileFormatter{
                      *    -parse the currentWordBuffer till it is empty by calling format_currentWordBuffer (NO NEW FLAGS, JUST ONE CONSTANT STREAM OF WORDS TO BE FORMATTED USING THE CURRENT FLAGS)
                      *    -update the flag information
                      * }else{
-                     *    -add tempBuffer to currentWordBuffer
+                     *    -add tempBuffer to currentWordBuffer -->appending an array to an array
                      * }
                      * 
                      * //--NOTE: the -e flag should not change any flags other than just adding a new line
