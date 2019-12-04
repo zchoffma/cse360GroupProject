@@ -84,7 +84,7 @@ public class InitialCleaner{
             // then make the entire line just that flag. 
             if(lineArray[i].length() == FLAG_LENGTH && lineArray[i].substring(0, 1).compareToIgnoreCase("-") == 0){
                 isFlag = is_valid_flag(lineArray[i].charAt(1));
-                
+            
                 if(isFlag){
                     //make the output line only the flag
                     stringToAdd = lineArray[i];

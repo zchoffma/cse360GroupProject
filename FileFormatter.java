@@ -16,6 +16,8 @@ package teamproject;
 
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class FileFormatter{
      //All flags
@@ -59,28 +61,78 @@ public class FileFormatter{
     /* format_input():  Driver function for file formatter
      * 
      *  Description:
-     *      Reads in one line at a time then passes that string line to format_line
-     *      where processing of individual lines takes place
+     *     //--TODO
+     *      
      */
-    public void format_input(){
+    public void format_input(){  //--NOT TESTED
+
         try{
             while((this.line = br.readLine()) != null){
                 if(line.length() > 0){
+                    
+                    //if line is a flag, process current word buffer and update currentFlag info
+                    if(line.compareToIgnoreCase("-r")==0){
+                        this.format_current_word_buffer();
+                        this.currentJustFlag = JustificationFlags.R;
 
-                    /* TODO
-                     *
-                     * tempBuffer += line.split(" ", 0);
-                     *
-                     * if(line is a flag){     --//this is not a real if statement, most likely will be a large switch statement with the default being the else
-                     *    -parse the currentWordBuffer till it is empty by calling format_currentWordBuffer (NO NEW FLAGS, JUST ONE CONSTANT STREAM OF WORDS TO BE FORMATTED USING THE CURRENT FLAGS)
-                     *    -update the flag information
-                     * }else{
-                     *    -add tempBuffer to currentWordBuffer -->appending an array to an array
-                     * }
-                     * 
-                     * //--NOTE: the -e flag should not change any flags other than just adding a new line
-                     */
-            
+                    }else if(line.compareToIgnoreCase("-c")==0){
+                        this.format_current_word_buffer();
+                        this.currentJustFlag = JustificationFlags.C;
+
+                    }else if(line.compareToIgnoreCase("-l")==0){
+                        this.format_current_word_buffer();
+                        this.currentJustFlag = JustificationFlags.L;
+
+                    }else if(line.compareToIgnoreCase("-t")==0){
+                        this.format_current_word_buffer();
+                        this.currentJustFlag = JustificationFlags.T;
+
+                    }else if(line.compareToIgnoreCase("-d")==0){
+                        this.format_current_word_buffer();
+                        this.currentSpaceFlag = SpacingFlags.D;
+
+                    }else if(line.compareToIgnoreCase("-s")==0){
+                        this.format_current_word_buffer();
+                        this.currentSpaceFlag = SpacingFlags.S;
+
+                    }else if(line.compareToIgnoreCase("-i")==0){
+                        this.format_current_word_buffer();
+                        this.currentIndentFlag = IndentationFlags.I;
+
+                    }else if(line.compareToIgnoreCase("-b")==0){
+                        this.format_current_word_buffer();
+                        this.currentIndentFlag = IndentationFlags.B;
+
+                    }else if(line.compareToIgnoreCase("-2")==0){
+                        this.format_current_word_buffer();
+                        this.currentColumnFlag = ColumnFlags.TWO;
+
+                    }else if(line.compareToIgnoreCase("-1")==0){
+                        this.format_current_word_buffer();
+                        this.currentColumnFlag = ColumnFlags.ONE;
+
+                    }else if(line.compareToIgnoreCase("-e")==0){
+                        outputFileBuffer.append("\n");  //only prints one new line-->does not change currentWordBuffer
+
+                    }else{
+                        //split the current line into a temporary array
+                        String[] tempWordBuffer = this.line.split(" ", 0);
+
+                        //if there are no words in word buffer, set the current word buffer  = temp (avoids a space at the beginning)
+                        if(currentWordBuffer.length == 0){
+                            currentWordBuffer = new String[tempWordBuffer.length];
+                            System.arraycopy(tempWordBuffer, 0, currentWordBuffer, 0, tempWordBuffer.length);
+                        }else{
+
+                            //probaby the grossest way to say append currentWordBuffer with tempwordBuffer
+                            Object[] tempObjectWordBuffer = Stream.concat(Arrays.stream(this.currentWordBuffer), Arrays.stream(tempWordBuffer)).toArray();
+                            this.currentWordBuffer = new String[tempWordBuffer.length];
+                            System.arraycopy(tempObjectWordBuffer, 0, this.currentWordBuffer, 0, tempObjectWordBuffer.length);
+                            tempWordBuffer = null; //delete temp word buffer (garbage collector)
+                            tempObjectWordBuffer = null; //delete temp object buffer (garbage collector)
+                        }
+
+                    } //end large if else statement
                 } //end while if
             }// end while
 
@@ -130,6 +182,14 @@ public class FileFormatter{
 
     }
     
+
+
+    /**
+     *  ADD DESCRIPTION HERE OF METHOD
+     * 
+     *
+     * 
+     */
     public String justifyLine(String s, int length)
     {
     	int spaceCount = 0; 
@@ -144,7 +204,8 @@ public class FileFormatter{
     			spaceCount++;
     			end--;
     		}
-    		s.trim();
+            s.trim();
+            //CHECK IF THERE IS AN INDENT
     		s = s + new String(new char[spaceCount]).replace("\0", " ");
     		spaceCount = 0; 
     		
@@ -153,13 +214,15 @@ public class FileFormatter{
     	
     	if(currentJustFlag == JustificationFlags.L)
     	{
-    		
-    		s.trim();
+    		//AUTOMATICALLY IS LEFT JUSTIFIED FOR DEFAULT, NO NEED TO TRIM SINCE WE NEED 80 CHARS
+    		//s.trim();
     		
     	}
     	
     	if(currentJustFlag == JustificationFlags.C)
     	{
+
+            //CHECK THIS-- should be really similar to -r, just only remove half of the spaces at end and stick them in front
     		int padSize = MAX_LINE_LENGTH - s.length();
     		int padStart = s.length() + padSize/2;
     		
