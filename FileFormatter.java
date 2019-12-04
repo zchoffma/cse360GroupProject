@@ -1,5 +1,7 @@
+package teamproject;
+
 /***************************************************************************
- * Authors: Zachary Hoffmann,                                                
+ * Authors: Zachary Hoffmann, Kobe Goldman, ...                                                 
  * IDs: 1214623033,                                                          
  * Date: 12/2/19                                                           
  * Description:                                                            
@@ -126,6 +128,64 @@ public class FileFormatter{
          */
 
 
+    }
+    
+    public String justifyLine(String s, int length)
+    {
+    	int spaceCount = 0; 
+    	char spaceChar = ' ';
+    	length = s.length();
+    	
+    	if(currentJustFlag == JustificationFlags.R)
+    	{
+    		int end = s.length();
+    		while(s.charAt(end) == spaceChar)
+    		{
+    			spaceCount++;
+    			end--;
+    		}
+    		s.trim();
+    		s = s + new String(new char[spaceCount]).replace("\0", " ");
+    		spaceCount = 0; 
+    		
+    		
+    	}
+    	
+    	if(currentJustFlag == JustificationFlags.L)
+    	{
+    		
+    		s.trim();
+    		
+    	}
+    	
+    	if(currentJustFlag == JustificationFlags.C)
+    	{
+    		int padSize = MAX_LINE_LENGTH - s.length();
+    		int padStart = s.length() + padSize/2;
+    		
+    		s = String.format("%" + padStart + "s", s);
+    	    s = String.format("%-" + MAX_LINE_LENGTH  + "s", s);
+    		
+    	}
+    	
+    	if(currentJustFlag == JustificationFlags.T)
+    	{
+    		int end = s.length();
+    		String[] words = s.split("\\s+");
+    	    int wordAmount = words.length;
+    	    while(s.charAt(end) == spaceChar)
+    		{
+    			spaceCount++;
+    			end--;
+    		}
+    	    s.trim();
+    	    int spaceAmountPerWord = (int) Math.ceil(spaceCount/4);
+    	    s = s + new String(new char[spaceAmountPerWord]).replace(' ', ' ');
+    		
+    	}
+
+    	return s; 
+    	
     }
 
 
