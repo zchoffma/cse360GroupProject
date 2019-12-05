@@ -1,4 +1,4 @@
-package cse360project1;
+//package cse360project1;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

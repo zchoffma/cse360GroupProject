@@ -23,6 +23,8 @@ public class InitialCleaner{
     private BufferedReader br;
     private StringBuffer cleanedBuffer;
     private String line;
+    private String filePath;
+    private String outputFilePath;
     private int currentLineNumber;
     private int FLAG_LENGTH = 2;
 
@@ -39,6 +41,8 @@ public class InitialCleaner{
             System.out.println("FileNotFound Exception\n");
         }
         
+        this.outputFilePath = "";
+        this.filePath = filePath;
         this.line = "";
         this.currentLineNumber = 1;
     }
@@ -61,6 +65,8 @@ public class InitialCleaner{
 
             System.out.println("-------------------------------------------------\n");
             System.out.println(cleanedBuffer.toString());
+
+            this.write_to_file();
 
         }catch(Exception e){
                 /**********************************************************************************************************
@@ -119,7 +125,6 @@ public class InitialCleaner{
                 this.add_string_to_output(" ");
             }
         }   
-
         //add the newline char at the end
         this.add_string_to_output("\n");
     }
@@ -149,7 +154,7 @@ public class InitialCleaner{
                 /**********************************************************************************************************
                  * ERROR CONDITION----PRINT TO ERROR LOG
                  **********************************************************************************************************/
-                System.out.println("ERROR: non ascii character '" + (char)character +"' was removed");
+                System.out.println("ERROR: non ascii character '" + (char)character +"' was removed in line: " + this.currentLineNumber);
             }
         }
         
@@ -181,4 +186,22 @@ public class InitialCleaner{
                 return false;
         }//end switch
     }//end of is_valid_flag
+
+    public void write_to_file(){
+        StringBuilder newFilePath = new StringBuilder(this.filePath);
+
+
+
+        try{                
+            File outFile = new File("testOut.txt");
+            FileWriter fw = new FileWriter(outFile);
+            fw.write(this.cleanedBuffer.toString());
+            fw.close();
+
+        }catch(Exception e){
+            System.out.println("ERROR: file unable to be written");
+        }
+        
+
+    }
 }//end of class

@@ -29,6 +29,7 @@ public class FileFormatter{
     private File fo;
     private FileReader fr;
     private BufferedReader br;
+    private String filePath;
     private StringBuffer outputFileBuffer;  //This is the file write buffer
     private String line; //original input line
     private String[] currentWordBuffer; //words between flags (everything in this buffer has the same flags)
@@ -47,9 +48,13 @@ public class FileFormatter{
             this.br = new BufferedReader(fr);
             this.outputFileBuffer = new StringBuffer();
         }catch(Exception e){
+            /**********************************************************************************************************
+            * ERROR CONDITION----PRINT TO ERROR LOG
+            **********************************************************************************************************/
             System.out.println("FileNotFound Exception\n");
         }
         
+        this.filePath = filePath;
         this.line = "";
         this.formattedLine = "";
         this.currentJustFlag = JustificationFlags.L;  //left justification
@@ -268,5 +273,11 @@ public class FileFormatter{
         **********************************************************************************************************/
         //replace system.out to consol text box in gui
         System.out.println(outputFileBuffer.toString());
+    }
+
+
+    //will write output buffer to file of specified filepath
+    public void write_to_file(){
+
     }
 }
