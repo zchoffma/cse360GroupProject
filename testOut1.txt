@@ -1,24 +1,27 @@
-Test File Input 
+Test File Input lsdl slsl slslslsl slsls slslsl slsl ls sls sl 
 
--l
+-r
 
-Test file input 
--l
+test file input 
+
 -e
 
-spaces test right here 
+
+-r
+
+test right here 
 Once upon a time, there was a little girl who lived in a village near the forest. Whenever she went out, the little girl wore a red riding cloak, so everyone in the village called her Little Red Riding Hood. 
 One morning, Little Red Riding Hood asked her mother if she could go to visit her grandmother as it had been awhile since they'd seen each other. 
 "That's a good idea," her mother said. So they packed a nice basket for Little Red Riding Hood to take to her grandmother. 
 When the basket was ready, the little girl put on her red cloak and kissed her mother goodbye. 
  
--e
-
 -l
 
 -d
 
 -t
+
+-e
 
 "Remember, go straight to Grandma's house," her mother cautioned. "Don't dawdle along the way and please don't talk to strangers! The woods are dangerous." 
  
@@ -27,9 +30,11 @@ But when Little Red Riding Hood noticed some lovely flowers in the woods, she fo
 Little Red Riding Hood was enjoying the warm summer day so much, that she didn't notice a dark shadow approaching out of the forest behind her... 
 Suddenly, the wolf appeared beside her. 
 
--e 
+-e
+
+
 "What are you doing out here, little girl?" the wolf asked in a voice as friendly as he could muster. 
 "I'm on my way to see my Grandma who lives through the forest, near the brook," Little Red Riding Hood replied. 
 Then she realized how late she was and quickly excused herself, rushing down the path to her Grandma's house. 
 The wolf, in the meantime, took a shortcut... 
-The wolf, a little out of breath from running, arrived at Grandma's and knocked lightly at the door. thha hahah is aaaa aaaa hahahah 
+The wolf, a little out of breath from running, arrived at Grandma's and knocked lightly at the door. 

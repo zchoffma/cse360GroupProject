@@ -197,7 +197,7 @@ public class InitialCleaner extends InterfaceApplication{
 
 
         try{                
-            File outFile = new File("testOut.txt");
+            File outFile = new File("testOut1.txt");
             FileWriter fw = new FileWriter(outFile);
             fw.write(this.cleanedBuffer.toString());
             fw.close();

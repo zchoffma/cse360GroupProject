@@ -74,7 +74,6 @@ public class FileFormatter{
     public void format_input(){  //--TESTED WORKING
         ArrayList<String> appendableBuffer = new ArrayList<String>();
 
-
         //int count = 0;
         try{
             while((this.line = br.readLine()) != null){
@@ -86,12 +85,15 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentJustFlag = JustificationFlags.R;
+
                     }else if(line.compareToIgnoreCase("-c")==0){
                         Object[] objectArray = appendableBuffer.toArray();
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentJustFlag = JustificationFlags.C;
 
                     }else if(line.compareToIgnoreCase("-l")==0){
@@ -99,6 +101,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentJustFlag = JustificationFlags.L;
 
                     }else if(line.compareToIgnoreCase("-t")==0){
@@ -106,6 +109,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentJustFlag = JustificationFlags.T;
 
                     }else if(line.compareToIgnoreCase("-d")==0){
@@ -113,6 +117,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentSpaceFlag = SpacingFlags.D;
 
                     }else if(line.compareToIgnoreCase("-s")==0){
@@ -120,6 +125,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentSpaceFlag = SpacingFlags.S;
 
                     }else if(line.compareToIgnoreCase("-i")==0){
@@ -127,6 +133,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentIndentFlag = IndentationFlags.I;
 
                     }else if(line.compareToIgnoreCase("-b")==0){
@@ -134,6 +141,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentIndentFlag = IndentationFlags.B;
 
                     }else if(line.compareToIgnoreCase("-2")==0){
@@ -141,6 +149,7 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentColumnFlag = ColumnFlags.TWO;
 
                     }else if(line.compareToIgnoreCase("-1")==0){
@@ -148,44 +157,34 @@ public class FileFormatter{
                         this.currentWordBuffer = new String[objectArray.length];
                         System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         this.currentColumnFlag = ColumnFlags.ONE;
 
                     }else if(line.compareToIgnoreCase("-e")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
+                        this.format_current_word_buffer();
+                        appendableBuffer.clear();
                         outputFileBuffer.append("\n");  //only prints one new line-->does not change currentWordBuffer
 
                     }else{
 
-                        //split the current line into a temporary array
+                        //split the current line into a temporary array and add to the appendable Buffer
                         String[] tempWordBuffer = this.line.split("\\s+");
                         for(int i = 0; i < tempWordBuffer.length; i++){
                             appendableBuffer.add(tempWordBuffer[i]);
                         }
-                        //if there are no words in word buffer, set the current word buffer  = temp (avoids a space at the beginning)
-                        /*
-                        if(currentWordBuffer == null){
-                            System.out.println("LENGTH 0");
-                            currentWordBuffer = new String[tempWordBuffer.length];
-                            System.arraycopy(tempWordBuffer, 0, currentWordBuffer, 0, tempWordBuffer.length);
-                        }else{
-                            System.out.println("ELSEYYY");
-                            //probaby the grossest way to say append currentWordBuffer with tempwordBuffer
-                            Object[] tempObjectWordBuffer = Stream.concat(Arrays.stream(this.currentWordBuffer), Arrays.stream(tempWordBuffer)).toArray();
-                            this.currentWordBuffer = new String[tempWordBuffer.length];
-                            System.arraycopy(tempObjectWordBuffer, 0, this.currentWordBuffer, 0, tempObjectWordBuffer.length);
-                            tempWordBuffer = null; //delete temp word buffer (garbage collector)
-                            tempObjectWordBuffer = null; //delete temp object buffer (garbage collector)
-                        
-                        }*/
                     } //end large if else statement
-                } //end while if
-
-                //process final block 
-                Object[] objectArray = appendableBuffer.toArray();
-                this.currentWordBuffer = new String[objectArray.length];
-                System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
-                
+                } //end while if   
             }// end while
 
+            //process final block 
+            Object[] objectArray = appendableBuffer.toArray();
+            this.currentWordBuffer = new String[objectArray.length];
+            System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
+            this.format_current_word_buffer();
+            
         }catch(Exception e){
             /**********************************************************************************************************
             * ERROR CONDITION----PRINT TO ERROR LOG
@@ -194,49 +193,111 @@ public class FileFormatter{
         }
     }
 
+
+    public void debug(String toPrint){
+        System.out.println(toPrint);
+    }
+
+
     /* format_current_word_buffer():  empties current word buffer w/ current flags
      * 
      * Description:
      *      
     */
     public void format_current_word_buffer(){
+        //initially check if buffer is empty
+        if(this.currentWordBuffer.length != 0){
+            //Get Spacing Format
+            String spaces = "";
+            if(currentSpaceFlag == SpacingFlags.S){
+                spaces = " ";                                   //Single spaces
+            }else if(currentSpaceFlag == SpacingFlags.D){
+                spaces = "  ";                                  //Double spaces
+            }
+
+            if(currentColumnFlag == ColumnFlags.ONE){
+                this.One_Column_Format(spaces);
+            }else if(currentColumnFlag == ColumnFlags.TWO){
+                this.Two_Column_Format(spaces);
+            }
+        }
+
+        //clear the current buffer to be garbage collected
         this.currentWordBuffer = null;
-        System.out.println("MOPS PASSTHROUGH");
-        //NOTE:indenting will only indent first line of the buffer.
-        //String space;
-        //int bufferIterator = 0;
-
-        /* if(space flag = S) { 
-         *   space = " "; //one space
-         * }else if{space flag = D){
-         *      space = "  "; //two spaces
-         * } 
-         *
-         *if(indent flag = I){
-         *    this.formattedLine = "     ";  //five spaces
-         *}
-         * 
-         *  
-         *while(this.currentWordBuffer is not empty){  //still not fully figured out.  here is where we check the flags and do formatting.  heres general idea though:
-         *    if(size of formattedLine + size of currentWordBuffer[iterator] + spaces_size < 81){
-         *          add currentWordBuffer[iterator] to the formattedLine w/
-         *              formattedLine += space + currentWordBuffer[iterator];
-         *  
-         *          //--generally this is what we should do but we need a bunch of special 
-         *              cases for all the different flags. Im not sure how we should do that, consult with group
-         *          
-         *    }else{
-         *          formattedLine += "\n";
-         *          outputFileBuffer.append(forrmattedLine);
-         *    }
-         * 
-         *     
-         * }
-         */
-
-
     }
     
+
+
+    public void One_Column_Format(String space){
+        debug("one column"); //----------------------------------------------------
+    }
+
+
+
+    /* Driver function for formatting two Columns
+     *
+     *  Handles creating the lines, then splitting them into two separate columns;
+     * 
+     */
+    public void Two_Column_Format(String space){
+        ArrayList<String> twoColumnBuffer = new ArrayList<String>();
+        StringBuilder thirtyFiveCharLine = new StringBuilder();
+        int bufferIterator = 0;
+        int currWordSize = 0;
+
+
+        //Build arrayList of 35 char lines
+        while(bufferIterator != this.currentWordBuffer.length){
+            if(thirtyFiveCharLine.length() == 35){
+                twoColumnBuffer.add(thirtyFiveCharLine.toString());
+                thirtyFiveCharLine.delete(0, thirtyFiveCharLine.length());
+            }
+
+            currWordSize = this.currentWordBuffer[bufferIterator].length();
+            if((currWordSize + thirtyFiveCharLine.length()) <= 35){
+                thirtyFiveCharLine.append(this.currentWordBuffer[bufferIterator]);
+                bufferIterator++;
+
+            if(bufferIterator >= this.currentWordBuffer.length){
+                while(thirtyFiveCharLine.length() != 35){
+                    thirtyFiveCharLine.append(" "); 
+                }
+                twoColumnBuffer.add(thirtyFiveCharLine.toString());
+            }
+            }else if(thirtyFiveCharLine.length() < 35){
+                while(thirtyFiveCharLine.length() != 35){
+                    thirtyFiveCharLine.append(" ");  
+                }
+            }
+            if((thirtyFiveCharLine.length() + space.length()) <= 35){
+                thirtyFiveCharLine.append(space);
+            }
+        }
+
+        //justify each line --------------------------------------------------------------------------------------------------------put back in
+        //for(int i = 0; i < twoColumnBuffer.size(); i++){
+            //System.out.println(twoColumnBuffer.get(i));
+            //twoColumnBuffer.set(i, justifyLine(twoColumnBuffer.get(i), 35));
+        //}
+        
+
+        //split into columns and print
+        int columnSize = (int) Math.ceil((double)twoColumnBuffer.size() / (double)2);
+        for(int i = 0; i < columnSize; i++){
+            //System.out.println(i + " " + (i+columnSize)); -----------------------------------
+            if((i + columnSize) >= twoColumnBuffer.size()){
+                this.outputFileBuffer.append(String.format("%35s%45s", twoColumnBuffer.get(i), ""));
+                this.outputFileBuffer.append("\n");
+            }else{
+                this.outputFileBuffer.append(String.format("%35s%10s%35s", twoColumnBuffer.get(i), "", twoColumnBuffer.get(i+columnSize)));
+                this.outputFileBuffer.append("\n");
+            }
+        }
+    }
+
+
+
+
 
 
     /**
@@ -307,10 +368,15 @@ public class FileFormatter{
     }
 
 
+
+
+
     //getter for output file.  will be used in the SAVE AS button of the gui
     public StringBuffer get_StringBuffer(){
         return this.outputFileBuffer;
     }
+
+
 
     //Handler function for "PREVIEW" button on gui
     public void preview_output(){
@@ -323,8 +389,21 @@ public class FileFormatter{
     }
 
 
-    //will write output buffer to file of specified filepath
-    public void write_to_file(){
 
+
+    //will write output buffer to file of specified filepath
+    public void write_to_file(String newFilePath){
+
+            /*DEBUG PRINT TO FILE----------------------------------------------------------------------------*/
+            try{                
+                File outFile = new File("twoColumnOut.txt");
+                FileWriter fw = new FileWriter(outFile);
+                fw.write(this.outputFileBuffer.toString());
+                fw.close();
+    
+            }catch(Exception e){
+                System.out.println("ERROR: file unable to be written");
+            }
+    
     }
 }

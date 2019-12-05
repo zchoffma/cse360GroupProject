@@ -3,29 +3,20 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Top{
-public static void main(String[] args){
 
-    //append string test
-    /*
-    String testLine = "";
-    String testLine2 = "guess what fucker it works";
+    enum JustificationFlags{R, C, L, T;} 
+     enum SpacingFlags{D, S;}
+     enum IndentationFlags{I, B, N;}
+     enum ColumnFlags{ONE, TWO;}
 
-    String[] currentWordBuffer = testLine.split(" ", 0);
-    String[] newSplitLine = testLine2.split(" ", 0);
-
-    Object[] tempWordBuffer = Stream.concat(Arrays.stream(currentWordBuffer), Arrays.stream(newSplitLine)).toArray();
-    currentWordBuffer = new String[tempWordBuffer.length];
-    System.arraycopy(tempWordBuffer, 0, currentWordBuffer, 0, tempWordBuffer.length);
-    tempWordBuffer = null; //delete temp word buffer
-
-
-    for(int i = 0; i < currentWordBuffer.length; i++){
-        System.out.print(currentWordBuffer[i] + " ");
+    public static void main(String[] args){
+        
+        
+        InitialCleaner newCleaner = new InitialCleaner("test.txt");
+        newCleaner.clean_input();
+        newCleaner.write_to_file();
+        FileFormatter newFormatter = new FileFormatter("testOut1.txt");
+        newFormatter.format_input();
+        
     }
-    */
-
-    InitialCleaner newCleaner = new InitialCleaner("test.txt");
-    newCleaner.clean_input();
-    FileFormatter newFormatter = new FileFormatter("testOut.txt");
-    newFormatter.format_input();
-}}
+}
