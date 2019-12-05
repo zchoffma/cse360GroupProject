@@ -230,8 +230,8 @@ public class InterfaceApplication extends javax.swing.JFrame  {
         FilePathField.setText(fileName);
         InitialCleaner cleanFile = new InitialCleaner(fileName);
         cleanFile.clean_input();
-        String testStr = cleanFile.Test_Inheritance();
-        this.Console_Write(testStr);
+        //String testStr = cleanFile.Test_Inheritance();
+        //this.Console_Write(testStr);
     }//GEN-LAST:event_ChooseFileActionPerformed
 
     private void SaveFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFileButtonActionPerformed

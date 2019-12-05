@@ -1,7 +1,7 @@
 //package teamproject;
 
 /***************************************************************************
- * Authors: Zachary Hoffmann, Kobe Goldman, ...                                                 
+ * Authors: Zachary Hoffmann, Kobe Goldman                                                
  * IDs: 1214623033,                                                          
  * Date: 12/2/19                                                           
  * Description:                                                            
@@ -68,7 +68,7 @@ public class FileFormatter{
     /* format_input():  Driver function for file formatter
      * 
      *  Description:
-     *     //--TODO
+     *     
      *      
      */
     public void format_input(){  //--TESTED WORKING
@@ -184,6 +184,8 @@ public class FileFormatter{
             this.currentWordBuffer = new String[objectArray.length];
             System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
             this.format_current_word_buffer();
+
+            this.write_to_file("test");  //----------------------------------------------------------debug file output 
             
         }catch(Exception e){
             /**********************************************************************************************************
@@ -229,8 +231,61 @@ public class FileFormatter{
 
 
     public void One_Column_Format(String space){
-        debug("one column"); //----------------------------------------------------
+        ArrayList<String> oneColumnBuffer = new ArrayList<String>();
+        StringBuilder eightyCharLine = new StringBuilder();
+        int bufferIterator = 0;
+        int currWordSize = 0;
+        int wordsAdded = 0;
+
+        //Build arrayList of 35 char lines
+        while(bufferIterator != this.currentWordBuffer.length){
+
+            if(eightyCharLine.length() == 80){
+                oneColumnBuffer.add(eightyCharLine.toString());
+                eightyCharLine.delete(0, eightyCharLine.length());
+                wordsAdded = 0;
+            }
+
+            //INDENTION HANDLER ---------------------------
+            if(currentIndentFlag == IndentationFlags.I && bufferIterator == 0){
+                eightyCharLine.append(String.format("%5s", ""));
+            }else if(currentIndentFlag == IndentationFlags.B && wordsAdded == 0){
+                eightyCharLine.append(String.format("%10s", ""));
+            }
+            //END INDENTION HANDLER --------------------------
+
+
+            currWordSize = this.currentWordBuffer[bufferIterator].length();
+            if((currWordSize + eightyCharLine.length()) <= 80){
+                eightyCharLine.append(this.currentWordBuffer[bufferIterator]);
+                bufferIterator++;
+                wordsAdded++;
+
+            if(bufferIterator >= this.currentWordBuffer.length){
+                while(eightyCharLine.length() != 80){
+                    eightyCharLine.append(" "); 
+                }
+                oneColumnBuffer.add(eightyCharLine.toString());
+                wordsAdded = 0;
+            }
+            }else if(eightyCharLine.length() < 80){
+                while(eightyCharLine.length() != 80){
+                    eightyCharLine.append(" ");  
+                }
+            }
+            if((eightyCharLine.length() + space.length()) <= 80){
+                eightyCharLine.append(space);
+            }
+        }
+
+
+        for(int i = 0; i < oneColumnBuffer.size(); i++){
+            oneColumnBuffer.set(i, justifyLine(oneColumnBuffer.get(i), 80));
+            this.outputFileBuffer.append(oneColumnBuffer.get(i));
+            this.outputFileBuffer.append("\n");
+        }
     }
+
 
 
 
@@ -274,11 +329,11 @@ public class FileFormatter{
             }
         }
 
-        //justify each line --------------------------------------------------------------------------------------------------------put back in
-        //for(int i = 0; i < twoColumnBuffer.size(); i++){
+        //justify each line 
+        for(int i = 0; i < twoColumnBuffer.size(); i++){
             //System.out.println(twoColumnBuffer.get(i));
-            //twoColumnBuffer.set(i, justifyLine(twoColumnBuffer.get(i), 35));
-        //}
+            twoColumnBuffer.set(i, justifyLine(twoColumnBuffer.get(i), 35));
+        }
         
 
         //split into columns and print
@@ -300,73 +355,82 @@ public class FileFormatter{
 
 
 
-    /**
-     *  ADD DESCRIPTION HERE OF METHOD
-     * 
-     *
-     * 
-     */
+    
+    //Written by Kobe
     public String justifyLine(String s, int length)
     {
     	int spaceCount = 0; 
     	char spaceChar = ' ';
-    	length = s.length();
-    	
-    	if(currentJustFlag == JustificationFlags.R)
+    	StringBuilder temp = new StringBuilder();
+    	String newString = "";
+
+    	if(this.currentJustFlag == JustificationFlags.R)
     	{
-    		int end = s.length();
+
+    		int end = s.length()-1;
+    		int beginningPadSize = length - s.length();
+
     		while(s.charAt(end) == spaceChar)
     		{
     			spaceCount++;
     			end--;
     		}
-            s.trim();
-            //CHECK IF THERE IS AN INDENT
-    		s = s + new String(new char[spaceCount]).replace("\0", " ");
-    		spaceCount = 0; 
-    		
-    		
-    	}
-    	
-    	if(currentJustFlag == JustificationFlags.L)
-    	{
-    		//AUTOMATICALLY IS LEFT JUSTIFIED FOR DEFAULT, NO NEED TO TRIM SINCE WE NEED 80 CHARS
-    		//s.trim();
-    		
-    	}
-    	
-    	if(currentJustFlag == JustificationFlags.C)
-    	{
 
-            //CHECK THIS-- should be really similar to -r, just only remove half of the spaces at end and stick them in front
-    		int padSize = MAX_LINE_LENGTH - s.length();
-    		int padStart = s.length() + padSize/2;
-    		
-    		s = String.format("%" + padStart + "s", s);
-    	    s = String.format("%-" + MAX_LINE_LENGTH  + "s", s);
-    		
-    	}
-    	
-    	if(currentJustFlag == JustificationFlags.T)
-    	{
-    		int end = s.length();
-    		String[] words = s.split("\\s+");
-    	    int wordAmount = words.length;
-    	    while(s.charAt(end) == spaceChar)
+            //Zach currently fixing right justify VVV
+            //String tempString = s.substring((s.length()-spaceCount), s.length());
+
+    		//s=s.trim()
+    		temp = new StringBuilder(s); 
+
+    		for(int i = 0; i<beginningPadSize;i++)
     		{
-    			spaceCount++;
-    			end--;
+    			temp.insert(0,spaceChar);
     		}
-    	    s.trim();
-    	    int spaceAmountPerWord = (int) Math.ceil(spaceCount/4);
-    	    s = s + new String(new char[spaceAmountPerWord]).replace(' ', ' ');
-    		
+    		spaceCount = 0; 
+    		newString = temp.toString();
     	}
 
-    	return s; 
-    	
-    }
 
+    	if(this.currentJustFlag == JustificationFlags.C)
+    	{
+    		int padSize = length - s.length();
+    		int padStart = s.length() + padSize/2;
+
+    		s = String.format("%" + padStart + "s", s);
+    	    s = String.format("%-" + length  + "s", s);
+            newString = s; 
+
+    	}
+
+    	if(this.currentJustFlag == JustificationFlags.T)
+    	{
+
+    		int count = 0; 
+    	    s = s.trim();
+
+    		for(int i = 0; i<s.length();i++)
+    		{
+    			if(s.charAt(i)==spaceChar)
+    			{
+    				count++;
+    			}
+    		}
+
+    		int spacePadSize = (int) Math.ceil(length/count);
+    		String spaceAmount = "";	
+
+    	    for(int i = 0; i<spacePadSize;i++)
+    	    {
+    	       	spaceAmount+=" ";
+    	    }
+
+    	    s = s.replace(" ", spaceAmount);
+    		temp = new StringBuilder(s);
+    	    newString = temp.toString();
+
+    	}
+    	return newString;
+    }
 
 
 
@@ -379,13 +443,8 @@ public class FileFormatter{
 
 
     //Handler function for "PREVIEW" button on gui
-    public void preview_output(){
-        //TODO
-        /**********************************************************************************************************
-        * ---PRINT TO CONSOLE LOG
-        **********************************************************************************************************/
-        //replace system.out to consol text box in gui
-        System.out.println(outputFileBuffer.toString());
+    public String get_preview_output(){
+        return outputFileBuffer.toString();
     }
 
 
@@ -394,9 +453,9 @@ public class FileFormatter{
     //will write output buffer to file of specified filepath
     public void write_to_file(String newFilePath){
 
-            /*DEBUG PRINT TO FILE----------------------------------------------------------------------------*/
+        newFilePath = "FormattedOutput.txt";
             try{                
-                File outFile = new File("twoColumnOut.txt");
+                File outFile = new File(newFilePath);
                 FileWriter fw = new FileWriter(outFile);
                 fw.write(this.outputFileBuffer.toString());
                 fw.close();

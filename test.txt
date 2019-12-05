@@ -1,16 +1,14 @@
 
--d
-Test File Input lsdl slsl slslslsl slsls slslsl slsl ls sls sl
+NEW INPUT 3
 
--r
 
 test file input 
 -e
+
 -r
+right input
 
-
-
-test right   here 
+adsdf tes sad 
 Once  upon a time, there   was a littªle girl whªo lived in a village near the forest.  Whenever she went out, the little girl wore a red riding cloak, so everyone in the village called her Little Red Riding Hood.
 
 One morning, Little Red Riding Hood asked her mother if she could go to visit her grandmother as it had been awhile since they'd seen each other.
@@ -19,7 +17,7 @@ One morning, Little Red Riding Hood asked her mother if she could go to visit he
 
 When the basket was ready, the little girl put on her red cloak and kissed her mother goodbye.
 
--l  -t -e 
+-t
 "Remember, go straight to Grandma's house," her mother cautioned.  "Don't dawdle along the way and please don't talk to strangers!  The woods are dangerous."
 ªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªª
 "Don't worry, mommy," said Little Red Riding Hood, "I'll be careful."
@@ -29,10 +27,8 @@ But when Little Red Riding Hood noticed some lovely flowers in the woods, she fo
 Little Red Riding Hood was enjoying the warm summer day so much, that she didn't notice a dark shadow approaching out of the forest behind her...
 
 Suddenly, the wolf appeared beside her.
-
 -e 
-
--p
+-i
 "What are you doing out here, little girl?" the wolf asked in a voice as friendly as he could muster.
 
 "I'm on my way to see my Grandma who lives through the forest, near the brook,"  Little Red Riding Hood replied.

@@ -22,6 +22,8 @@ public class InitialCleaner extends InterfaceApplication{
     private FileReader fr;
     private BufferedReader br;
     private StringBuffer cleanedBuffer;
+    private StringBuffer errorlogBuffer;
+    private Boolean passedClean;
     private String line;
     private String filePath;
     private String outputFilePath;
@@ -34,13 +36,18 @@ public class InitialCleaner extends InterfaceApplication{
             this.fr = new FileReader(fo);
             this.br = new BufferedReader(fr);
             this.cleanedBuffer = new StringBuffer();
+            this.errorlogBuffer = new StringBuffer();
         }catch(Exception e){
-                /**********************************************************************************************************
-                 * ERROR CONDITION----PRINT TO ERROR LOG
-                 **********************************************************************************************************/
+            /**********************************************************************************************************
+            * ERROR CONDITION----File Not Found
+            **********************************************************************************************************/
+            this.errorlogBuffer = new StringBuffer();
+            this.passedClean = false;
+            this.errorlogBuffer.append("FileNotFound: " + filePath + " not found\n");
             System.out.println("FileNotFound Exception\n");
         }
         
+        this.passedClean = true;
         this.outputFilePath = "";
         this.filePath = filePath;
         this.line = "";
@@ -49,29 +56,26 @@ public class InitialCleaner extends InterfaceApplication{
 
     //main driver function for initial scrubbing
     public void clean_input(){
-        System.out.println("InitialCleaner: ");
+        if(!is_passed()){
+            return;
+        }
+
         try{
             while((this.line = br.readLine()) != null){
+
                 if(line.length() > 0){
-
-                    //System.out.println(this.line);
-                    //TODO
-                    this.parse_line();
-                    
-                } //end while if
-
-                currentLineNumber++;
+                    this.parse_line(); 
+                }
+                this.currentLineNumber++;
             }// end while
-
-           // System.out.println("-------------------------------------------------\n");
-            //System.out.println(cleanedBuffer.toString());
-
-
         }catch(Exception e){
-                /**********************************************************************************************************
-                 * ERROR CONDITION----PRINT TO ERROR LOG
-                 **********************************************************************************************************/
+            /**********************************************************************************************************
+            * ERROR CONDITION----File Read Error
+            **********************************************************************************************************/
+            this.passedClean = false;
+            this.errorlogBuffer.append("FileReadError: Unknown Source\n");
             System.out.println("File read Error");
+           
         }
     }
     
@@ -85,8 +89,6 @@ public class InitialCleaner extends InterfaceApplication{
         boolean isAscii = true;
         boolean isFlag = false;
         int sameLineFlag = 0;
-
-        ///System.out.println(); //DEBUG------------------------------
 
         for(int i = 0; i < lineArray.length; i++){
 
@@ -106,10 +108,10 @@ public class InitialCleaner extends InterfaceApplication{
                     //make the output line only the flag
                     if(sameLineFlag > 0){
                         /**********************************************************************************************************
-                        * ERROR CONDITION----PRINT TO ERROR LOG
+                        * ERROR CONDITION----Multiple Flags on Same Line
                         **********************************************************************************************************/
-                        System.out.println("MULTIPLE FLAGS ON SAME LINE");
-                        System.out.println(lineArray[i] + " has been moved to new line");
+                        this.errorlogBuffer.append("SameLineFlag: Multiple Flags on Same Line\n");
+                        this.errorlogBuffer.append("'" + lineArray[i] + "' moved to new line\n");
                     }
 
                     sameLineFlag++;
@@ -151,9 +153,9 @@ public class InitialCleaner extends InterfaceApplication{
                 onlyAsciiString = onlyAsciiString + (char)character;
             }else{
                 /**********************************************************************************************************
-                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 * ERROR CONDITION---- Non Ascii Char
                  **********************************************************************************************************/
-                System.out.println("ERROR: non ascii character '" + (char)character +"' was removed in line: " + this.currentLineNumber);
+                this.errorlogBuffer.append("NonAsciiChar: "+ (char)character + " removed on line: " + this.currentLineNumber);
             }
         }
         
@@ -179,33 +181,45 @@ public class InitialCleaner extends InterfaceApplication{
             case 'e': return true;
             default:
                 /**********************************************************************************************************
-                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 * ERROR CONDITION----Invalid Flag
                  **********************************************************************************************************/
-                System.out.println("INVALID FLAG: -" + flag + " ignored\n"); //DEBUG------------------------------------------
+                this.errorlogBuffer.append("InvalidFlag: -" + flag + " ignored\n");
                 return false;
         }//end switch
     }//end of is_valid_flag
 
-    public String Test_Inheritance(){
-        return this.cleanedBuffer.toString();
-    }
 
 
-    public void write_to_file(){
+    //Cleans file and writes it to  (filename)Cleaned.txt and returns file path
+    public String write_to_file(){
         StringBuilder newFilePath = new StringBuilder(this.filePath);
-
-
+        newFilePath.replace(this.filePath.length() - 4, this.filePath.length(), "Cleaned.txt");
 
         try{                
-            File outFile = new File("testOut1.txt");
+            File outFile = new File(newFilePath.toString());
             FileWriter fw = new FileWriter(outFile);
             fw.write(this.cleanedBuffer.toString());
             fw.close();
 
         }catch(Exception e){
-            System.out.println("ERROR: file unable to be written");
-        }
-        
+            /**********************************************************************************************************
+            * ERROR CONDITION----Unable to Write to File
+            **********************************************************************************************************/
+            this.errorlogBuffer.append("CleanedWriteError: cannot write cleaned file\n");
+            this.passedClean = false;
 
+        }
+
+        return newFilePath.toString();
+    }
+
+    
+    public String get_errors(){
+        return this.errorlogBuffer.toString();
+    }
+    
+
+    public boolean is_passed(){
+        return this.passedClean;
     }
 }//end of class
