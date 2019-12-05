@@ -15,12 +15,13 @@
 import java.io.*;
 import java.lang.StringBuilder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public class InitialCleaner{
     private File fo;
     private FileReader fr;
     private BufferedReader br;
-    private StringBuffer inputBuffer;
+    private StringBuffer cleanedBuffer;
     private String line;
     private int currentLineNumber;
     private int FLAG_LENGTH = 2;
@@ -30,8 +31,11 @@ public class InitialCleaner{
             this.fo = new File(filePath);
             this.fr = new FileReader(fo);
             this.br = new BufferedReader(fr);
-            this.inputBuffer = new StringBuffer();
+            this.cleanedBuffer = new StringBuffer();
         }catch(Exception e){
+                /**********************************************************************************************************
+                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 **********************************************************************************************************/
             System.out.println("FileNotFound Exception\n");
         }
         
@@ -46,7 +50,7 @@ public class InitialCleaner{
             while((this.line = br.readLine()) != null){
                 if(line.length() > 0){
 
-                    System.out.println(this.line);
+                    //System.out.println(this.line);
                     //TODO
                     this.parse_line();
                     
@@ -56,9 +60,12 @@ public class InitialCleaner{
             }// end while
 
             System.out.println("-------------------------------------------------\n");
-            System.out.println(inputBuffer.toString());
+            System.out.println(cleanedBuffer.toString());
 
         }catch(Exception e){
+                /**********************************************************************************************************
+                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 **********************************************************************************************************/
             System.out.println("File read Error");
         }
     }
@@ -66,47 +73,87 @@ public class InitialCleaner{
 
     /* Processing for each line.  
     *
-    *  Splits each line into an array of strings and checks for flags and non ascii characters
+    *  Splits each line into an array of strings and checks for flags and non ascii characters and formats one space between each string
     */
     public void parse_line(){
-        String[] lineArray = this.line.split(" ", 0);
-        String stringToAdd = "";
+        String[] lineArray = this.line.split("\\s+"); 
         boolean isAscii = true;
         boolean isFlag = false;
+        int sameLineFlag = 0;
+
+        System.out.println(); //DEBUG------------------------------
 
         for(int i = 0; i < lineArray.length; i++){
+
             //check if only valid ascii characters
             isAscii = Charset.forName("US-ASCII").newEncoder().canEncode(lineArray[i]);
+
             //if the string contains non-ascii chars, remove them.  
             if(!isAscii){lineArray[i] = remove_non_ascii_chars(lineArray[i]);}
 
             //if the string is "-*" where * is some char, check to see if that is a valid char flag first, if not remove it,
             // then make the entire line just that flag. 
-            if(lineArray[i].length() == FLAG_LENGTH && lineArray[i].substring(0, 1).compareToIgnoreCase("-") == 0){
+            if(lineArray[i].length() == FLAG_LENGTH
+             && lineArray[i].substring(0, 1).compareToIgnoreCase("-") == 0){  //MAYBE MAKE IT SPLIT VALID FLAGS INTO THEIR OWN LINES
+                
                 isFlag = is_valid_flag(lineArray[i].charAt(1));
-            
                 if(isFlag){
                     //make the output line only the flag
-                    stringToAdd = lineArray[i];
-                    System.out.println("FLAG FOUND: " + stringToAdd);
+                    if(sameLineFlag > 0){
+                        /**********************************************************************************************************
+                        * ERROR CONDITION----PRINT TO ERROR LOG
+                        **********************************************************************************************************/
+                        System.out.println("MULTIPLE FLAGS ON SAME LINE");
+                        System.out.println(lineArray[i] + " has been moved to new line");
+                    }
+
+                    sameLineFlag++;
+                    this.add_string_to_output("\n");
+                    this.add_string_to_output(lineArray[i]);
+                    this.add_string_to_output("\n");
+                    System.out.println("FLAG FOUND: " + lineArray[i]);  //DEBUG -----------------------------------------------------------------
                 }
             }else{
-                stringToAdd = stringToAdd + lineArray[i] + " ";
+                //stringToBuild.append(lineArray[i].replaceAll("\\s", "") + new String(","));
+                this.add_string_to_output(lineArray[i]);
+                this.add_string_to_output(" ");
             }
         }   
 
-        //add the line plus a newline char at the end
-        stringToAdd = stringToAdd + "\n";
-        
-        inputBuffer.append(stringToAdd);
+        //add the newline char at the end
+        this.add_string_to_output("\n");
     }
 
-    /*
-    *      TODO
+
+    //method for this to avoid confusion 
+    public void add_string_to_output(String toAdd){
+        cleanedBuffer.append(toAdd);
+    }
+
+    /*  remove_non_ascii_chars():  Will remove any non ascii char from a given string
+    *     
+    *   Description:
+    *       function will iterate through nonAsciiString one character at a time until it finds the non ascii 
+    *       values and removes them, then returns the string of what is left. 
+    *       if * is a non ascii char:  abc*de ---> abcde
     */
     public String remove_non_ascii_chars(String nonAsciiString){
-        //TODO
-        return nonAsciiString;
+        int character;
+        String onlyAsciiString = "";
+        
+        for(int i = 0; i < nonAsciiString.length(); i++){
+            character = nonAsciiString.charAt(i);
+            if(character <= 0x7F){
+                onlyAsciiString = onlyAsciiString + (char)character;
+            }else{
+                /**********************************************************************************************************
+                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 **********************************************************************************************************/
+                System.out.println("ERROR: non ascii character '" + (char)character +"' was removed");
+            }
+        }
+        
+        return onlyAsciiString;
     }
 
     /* Method to check if character flag found is valid
@@ -127,10 +174,11 @@ public class InitialCleaner{
             case '1': return true;
             case 'e': return true;
             default:
+                /**********************************************************************************************************
+                 * ERROR CONDITION----PRINT TO ERROR LOG
+                 **********************************************************************************************************/
                 System.out.println("INVALID FLAG: -" + flag + " ignored\n");
                 return false;
         }//end switch
-        
     }//end of is_valid_flag
-
 }//end of class

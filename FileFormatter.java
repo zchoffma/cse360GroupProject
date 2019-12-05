@@ -1,4 +1,4 @@
-package teamproject;
+//package teamproject;
 
 /***************************************************************************
  * Authors: Zachary Hoffmann, Kobe Goldman, ...                                                 
@@ -116,7 +116,7 @@ public class FileFormatter{
 
                     }else{
                         //split the current line into a temporary array
-                        String[] tempWordBuffer = this.line.split(" ", 0);
+                        String[] tempWordBuffer = this.line.split("\\s+");
 
                         //if there are no words in word buffer, set the current word buffer  = temp (avoids a space at the beginning)
                         if(currentWordBuffer.length == 0){
@@ -137,6 +137,9 @@ public class FileFormatter{
             }// end while
 
         }catch(Exception e){
+            /**********************************************************************************************************
+            * ERROR CONDITION----PRINT TO ERROR LOG
+            **********************************************************************************************************/
             System.out.println("File read Error");
         }
     }
@@ -260,6 +263,9 @@ public class FileFormatter{
     //Handler function for "PREVIEW" button on gui
     public void preview_output(){
         //TODO
+        /**********************************************************************************************************
+        * ---PRINT TO CONSOLE LOG
+        **********************************************************************************************************/
         //replace system.out to consol text box in gui
         System.out.println(outputFileBuffer.toString());
     }

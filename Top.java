@@ -5,6 +5,8 @@ import java.util.stream.Stream;
 public class Top{
 public static void main(String[] args){
 
+    //append string test
+    /*
     String testLine = "";
     String testLine2 = "guess what fucker it works";
 
@@ -20,7 +22,8 @@ public static void main(String[] args){
     for(int i = 0; i < currentWordBuffer.length; i++){
         System.out.print(currentWordBuffer[i] + " ");
     }
+    */
 
-    //InitialCleaner newCleaner = new InitialCleaner("test.txt");
-    //newCleaner.clean_input();
+    InitialCleaner newCleaner = new InitialCleaner("test.txt");
+    newCleaner.clean_input();
 }}
