@@ -17,7 +17,7 @@ import java.lang.StringBuilder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-public class InitialCleaner{
+public class InitialCleaner extends InterfaceApplication{
     private File fo;
     private FileReader fr;
     private BufferedReader br;
@@ -63,10 +63,9 @@ public class InitialCleaner{
                 currentLineNumber++;
             }// end while
 
-            System.out.println("-------------------------------------------------\n");
-            System.out.println(cleanedBuffer.toString());
+           // System.out.println("-------------------------------------------------\n");
+            //System.out.println(cleanedBuffer.toString());
 
-            this.write_to_file();
 
         }catch(Exception e){
                 /**********************************************************************************************************
@@ -87,7 +86,7 @@ public class InitialCleaner{
         boolean isFlag = false;
         int sameLineFlag = 0;
 
-        System.out.println(); //DEBUG------------------------------
+        ///System.out.println(); //DEBUG------------------------------
 
         for(int i = 0; i < lineArray.length; i++){
 
@@ -117,7 +116,7 @@ public class InitialCleaner{
                     this.add_string_to_output("\n");
                     this.add_string_to_output(lineArray[i]);
                     this.add_string_to_output("\n");
-                    System.out.println("FLAG FOUND: " + lineArray[i]);  //DEBUG -----------------------------------------------------------------
+                    //System.out.println("FLAG FOUND: " + lineArray[i]);  //DEBUG -----------------------------------------------------------------
                 }
             }else{
                 //stringToBuild.append(lineArray[i].replaceAll("\\s", "") + new String(","));
@@ -182,10 +181,15 @@ public class InitialCleaner{
                 /**********************************************************************************************************
                  * ERROR CONDITION----PRINT TO ERROR LOG
                  **********************************************************************************************************/
-                System.out.println("INVALID FLAG: -" + flag + " ignored\n");
+                System.out.println("INVALID FLAG: -" + flag + " ignored\n"); //DEBUG------------------------------------------
                 return false;
         }//end switch
     }//end of is_valid_flag
+
+    public String Test_Inheritance(){
+        return this.cleanedBuffer.toString();
+    }
+
 
     public void write_to_file(){
         StringBuilder newFilePath = new StringBuilder(this.filePath);

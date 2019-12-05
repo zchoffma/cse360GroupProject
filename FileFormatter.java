@@ -16,6 +16,7 @@
 
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -57,6 +58,7 @@ public class FileFormatter{
         this.filePath = filePath;
         this.line = "";
         this.formattedLine = "";
+        this.currentWordBuffer = null;
         this.currentJustFlag = JustificationFlags.L;  //left justification
         this.currentColumnFlag = ColumnFlags.ONE;     //one column
         this.currentIndentFlag = IndentationFlags.N;  //no indentation
@@ -69,50 +71,82 @@ public class FileFormatter{
      *     //--TODO
      *      
      */
-    public void format_input(){  //--NOT TESTED
+    public void format_input(){  //--TESTED WORKING
+        ArrayList<String> appendableBuffer = new ArrayList<String>();
 
+
+        //int count = 0;
         try{
             while((this.line = br.readLine()) != null){
+
                 if(line.length() > 0){
-                    
                     //if line is a flag, process current word buffer and update currentFlag info
                     if(line.compareToIgnoreCase("-r")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentJustFlag = JustificationFlags.R;
-
                     }else if(line.compareToIgnoreCase("-c")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentJustFlag = JustificationFlags.C;
 
                     }else if(line.compareToIgnoreCase("-l")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentJustFlag = JustificationFlags.L;
 
                     }else if(line.compareToIgnoreCase("-t")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentJustFlag = JustificationFlags.T;
 
                     }else if(line.compareToIgnoreCase("-d")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentSpaceFlag = SpacingFlags.D;
 
                     }else if(line.compareToIgnoreCase("-s")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentSpaceFlag = SpacingFlags.S;
 
                     }else if(line.compareToIgnoreCase("-i")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentIndentFlag = IndentationFlags.I;
 
                     }else if(line.compareToIgnoreCase("-b")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentIndentFlag = IndentationFlags.B;
 
                     }else if(line.compareToIgnoreCase("-2")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentColumnFlag = ColumnFlags.TWO;
 
                     }else if(line.compareToIgnoreCase("-1")==0){
+                        Object[] objectArray = appendableBuffer.toArray();
+                        this.currentWordBuffer = new String[objectArray.length];
+                        System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
                         this.format_current_word_buffer();
                         this.currentColumnFlag = ColumnFlags.ONE;
 
@@ -120,32 +154,43 @@ public class FileFormatter{
                         outputFileBuffer.append("\n");  //only prints one new line-->does not change currentWordBuffer
 
                     }else{
+
                         //split the current line into a temporary array
                         String[] tempWordBuffer = this.line.split("\\s+");
-
+                        for(int i = 0; i < tempWordBuffer.length; i++){
+                            appendableBuffer.add(tempWordBuffer[i]);
+                        }
                         //if there are no words in word buffer, set the current word buffer  = temp (avoids a space at the beginning)
-                        if(currentWordBuffer.length == 0){
+                        /*
+                        if(currentWordBuffer == null){
+                            System.out.println("LENGTH 0");
                             currentWordBuffer = new String[tempWordBuffer.length];
                             System.arraycopy(tempWordBuffer, 0, currentWordBuffer, 0, tempWordBuffer.length);
                         }else{
-
+                            System.out.println("ELSEYYY");
                             //probaby the grossest way to say append currentWordBuffer with tempwordBuffer
                             Object[] tempObjectWordBuffer = Stream.concat(Arrays.stream(this.currentWordBuffer), Arrays.stream(tempWordBuffer)).toArray();
                             this.currentWordBuffer = new String[tempWordBuffer.length];
                             System.arraycopy(tempObjectWordBuffer, 0, this.currentWordBuffer, 0, tempObjectWordBuffer.length);
                             tempWordBuffer = null; //delete temp word buffer (garbage collector)
                             tempObjectWordBuffer = null; //delete temp object buffer (garbage collector)
-                        }
-
+                        
+                        }*/
                     } //end large if else statement
                 } //end while if
+
+                //process final block 
+                Object[] objectArray = appendableBuffer.toArray();
+                this.currentWordBuffer = new String[objectArray.length];
+                System.arraycopy(objectArray, 0, this.currentWordBuffer, 0, objectArray.length);
+                
             }// end while
 
         }catch(Exception e){
             /**********************************************************************************************************
             * ERROR CONDITION----PRINT TO ERROR LOG
             **********************************************************************************************************/
-            System.out.println("File read Error");
+            System.out.println(e.toString());
         }
     }
 
@@ -155,6 +200,8 @@ public class FileFormatter{
      *      
     */
     public void format_current_word_buffer(){
+        this.currentWordBuffer = null;
+        System.out.println("MOPS PASSTHROUGH");
         //NOTE:indenting will only indent first line of the buffer.
         //String space;
         //int bufferIterator = 0;

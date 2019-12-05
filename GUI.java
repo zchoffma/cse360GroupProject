@@ -10,7 +10,7 @@ import javax.swing.BoxLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
+//import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.Desktop;
 import javax.swing.JButton;
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
-import net.miginfocom.swing.MigLayout;
+//import net.miginfocom.swing.MigLayout;
 import javax.swing.JTextPane;
 import java.awt.Font;
 import java.awt.HeadlessException;
@@ -172,7 +172,7 @@ public class GUI extends JFrame {
 			
 		btnPreview.setBounds(10, 295, 100, 29);
 		contentPane.add(btnPreview);
-		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblNewLabel}));
+		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblNewLabel}));
 	
 		
 	}

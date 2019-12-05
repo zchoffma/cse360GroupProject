@@ -26,4 +26,6 @@ public static void main(String[] args){
 
     InitialCleaner newCleaner = new InitialCleaner("test.txt");
     newCleaner.clean_input();
+    FileFormatter newFormatter = new FileFormatter("testOut.txt");
+    newFormatter.format_input();
 }}
