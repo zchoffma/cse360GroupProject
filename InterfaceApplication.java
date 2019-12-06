@@ -1,6 +1,7 @@
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import java.awt.Font;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,7 +36,9 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     private void initComponents() {
 
         ConsoleField = new javax.swing.JTextArea();
+        ConsoleField.setFont(new Font("monospaced", Font.PLAIN, 12));
         ErrorLogField = new javax.swing.JTextArea();
+        ErrorLogField.setFont(new Font("monospaced", Font.PLAIN, 12));
         ConsoleScrollPane = new javax.swing.JScrollPane(ConsoleField, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         ErrorLogScrollPane = new javax.swing.JScrollPane(ErrorLogField, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jLabel1 = new javax.swing.JLabel();
@@ -67,7 +70,7 @@ public class InterfaceApplication extends javax.swing.JFrame  {
         */
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        jLabel1.setText("Text Parser Program");
+        jLabel1.setText(".txt File Formatter");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel2.setText("Console");
@@ -225,20 +228,35 @@ public class InterfaceApplication extends javax.swing.JFrame  {
 
     private void ChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChooseFileActionPerformed
         //-----------------------------------Choose File button
-         JFileChooser chooser = new JFileChooser();
+        //--initial reset
+        FilePathField.setText("");    //File path clear
+        ConsoleField.setText("");    //Console clear
+        ErrorLogField.setText("");    //Error log clear
+        formattedString = "";
+        errorString = "";
+        errors = false;
+
+
+        JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
         String fileName = file.getAbsolutePath();
-        FilePathField.setText(fileName);
-        hasChooseFileRun = true;
-        cleaner = new InitialCleaner(fileName);
-        cleaner.clean_input();
-        ErrorLogField.setText(cleaner.get_errors());
-        String fileToFormat = cleaner.write_to_file();
-        if(cleaner.is_passed()){
-            formatter = new FileFormatter(fileToFormat);
-            formatter.format_input();
+        if(fileName.substring(fileName.length() - 4, fileName.length()).compareTo(".txt") == 0){
+            FilePathField.setText(fileName);
+            hasChooseFileRun = true;
+            cleaner = new InitialCleaner(fileName);
+            cleaner.clean_input();
+            ErrorLogField.setText(cleaner.get_errors());
+            String fileToFormat = cleaner.write_to_file();
+            if(cleaner.is_passed()){
+                formatter = new FileFormatter(fileToFormat);
+                formatter.format_input();
+            }
+        }else{
+            ErrorLogField.setText("InvalidFileType: only .txt files allowed");
         }
+
+        
         
 
         //this.Console_Write(testStr);
@@ -257,16 +275,6 @@ public class InterfaceApplication extends javax.swing.JFrame  {
         }
     }//GEN-LAST:event_PreviewButtonActionPerformed
 
-
-    public void Console_Write(String toWrite){
-        System.out.println("CHECKSUM");
-        ConsoleField.setText(toWrite);
-    }
-
-    public void ErrorLog_Write(String errorMsg){
-        System.out.println("CHECKSUM");
-        ErrorLogField.setText(ErrorLogField.getText() + errorMsg);
-    }
     /**
      * @param args the command line arguments
      */

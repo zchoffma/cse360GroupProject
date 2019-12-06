@@ -44,6 +44,7 @@ public class InitialCleaner extends InterfaceApplication{
             this.errorlogBuffer = new StringBuffer();
             this.passedClean = false;
             this.errorlogBuffer.append("FileNotFound: " + filePath + " not found\n");
+            this.errorlogBuffer.append("\n");
             System.out.println("FileNotFound Exception\n");
         }
         
@@ -73,7 +74,8 @@ public class InitialCleaner extends InterfaceApplication{
             * ERROR CONDITION----File Read Error
             **********************************************************************************************************/
             this.passedClean = false;
-            this.errorlogBuffer.append("FileReadError: Unknown Source\n");
+            this.errorlogBuffer.append("FileReadError: Unknown Source");
+            this.errorlogBuffer.append("\n");
             System.out.println("File read Error");
            
         }
@@ -156,6 +158,7 @@ public class InitialCleaner extends InterfaceApplication{
                  * ERROR CONDITION---- Non Ascii Char
                  **********************************************************************************************************/
                 this.errorlogBuffer.append("NonAsciiChar: "+ (char)character + " removed on line: " + this.currentLineNumber);
+                this.errorlogBuffer.append("\n");
             }
         }
         

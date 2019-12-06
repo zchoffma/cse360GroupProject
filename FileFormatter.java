@@ -413,34 +413,35 @@ public class FileFormatter{
             return temp.toString();
     	}
 
+        //working
     	if(this.currentJustFlag == JustificationFlags.T)
-    	{
+    	{   
+            StringBuilder toReturn = new StringBuilder();
+            StringBuilder spaces = new StringBuilder();
+            int totalWhitespace = length;
+            int spacesBetween = 0;
+            String[] wordsInLine = s.split("\\s+");
+            for(int i = 0; i < wordsInLine.length; i++){
+                totalWhitespace -= wordsInLine[i].length();
+            }
+            System.out.println("Total whitespace " + totalWhitespace);
 
-    		int count = 0; 
-    	    s = s.trim();
+            spacesBetween = (totalWhitespace) / (wordsInLine.length - 1);
 
-    		for(int i = 0; i<s.length();i++)
-    		{
-    			if(s.charAt(i)==spaceChar)
-    			{
-    				count++;
-    			}
-    		}
+            while(spacesBetween != 0){
+                spaces.append(" ");
+                spacesBetween--;
+            }
 
-    		int spacePadSize = (int) Math.ceil(length/count);
-    		String spaceAmount = "";	
-
-    	    for(int i = 0; i<spacePadSize;i++)
-    	    {
-    	       	spaceAmount+=" ";
-    	    }
-
-    	    s = s.replace(" ", spaceAmount);
-    		temp = new StringBuilder(s);
-    	    newString = temp.toString();
-
-    	}
-    	return newString;
+            for(int i = 0; i < wordsInLine.length; i++){
+                toReturn.append(wordsInLine[i]);
+                toReturn.append(spaces);
+            }
+            System.out.println(toReturn.toString());
+            return toReturn.toString();
+        }
+        
+        return newString;
     }
 
 
