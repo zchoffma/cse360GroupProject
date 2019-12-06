@@ -390,13 +390,6 @@ public class FileFormatter{
         //working 
     	if(this.currentJustFlag == JustificationFlags.C)
     	{
-    		int padSize = length - s.length();
-    		int padStart = s.length() + padSize/2;
-
-    		s = String.format("%" + padStart + "s", s);
-    	    s = String.format("%-" + length  + "s", s);
-            newString = s; 
-
             int end = s.length()-1;
     		while(s.charAt(end) == spaceChar)
     		{

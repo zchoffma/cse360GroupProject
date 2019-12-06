@@ -47,8 +47,7 @@ public class InterfaceApplication extends javax.swing.JFrame  {
         ChooseFile = new javax.swing.JButton();
         SaveFileButton = new javax.swing.JButton();
         PreviewButton = new javax.swing.JButton();
-
-
+        hasChooseFileRun = false;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -201,8 +200,11 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     }//GEN-LAST:event_ConsoleFieldActionPerformed
     
     private void ErrorLogFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ErrorLogFieldActionPerformed
-        // TODO add your handling code here:
         //-------------------------------Error Log
+        if(hasChooseFileRun){
+            ErrorLogField.setText(cleaner.get_errors());
+        }
+        
     }//GEN-LAST:event_ErrorLogFieldActionPerformed
 
     private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed
@@ -214,6 +216,7 @@ public class InterfaceApplication extends javax.swing.JFrame  {
         formattedString = "";
         errorString = "";
         errors = false;
+        hasChooseFileRun = false;
     }//GEN-LAST:event_ResetButtonActionPerformed
 
     private void FilePathFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FilePathFieldActionPerformed
@@ -221,16 +224,23 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     }//GEN-LAST:event_FilePathFieldActionPerformed
 
     private void ChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChooseFileActionPerformed
-        // TODO add your handling code here:
         //-----------------------------------Choose File button
          JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
         String fileName = file.getAbsolutePath();
         FilePathField.setText(fileName);
-        InitialCleaner cleanFile = new InitialCleaner(fileName);
-        cleanFile.clean_input();
-        //String testStr = cleanFile.Test_Inheritance();
+        hasChooseFileRun = true;
+        cleaner = new InitialCleaner(fileName);
+        cleaner.clean_input();
+        ErrorLogField.setText(cleaner.get_errors());
+        String fileToFormat = cleaner.write_to_file();
+        if(cleaner.is_passed()){
+            formatter = new FileFormatter(fileToFormat);
+            formatter.format_input();
+        }
+        
+
         //this.Console_Write(testStr);
     }//GEN-LAST:event_ChooseFileActionPerformed
 
@@ -240,13 +250,10 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     }//GEN-LAST:event_SaveFileButtonActionPerformed
 
     private void PreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewButtonActionPerformed
-        // TODO add your handling code here:
+
         //-----------------------------------Preview Button
-        if(errors == true){
-            ErrorLogField.setText(errorString);
-        }
-        else{
-            ConsoleField.setText(formattedString);
+        if(cleaner.is_passed()){
+            ConsoleField.setText(formatter.get_preview_output());
         }
     }//GEN-LAST:event_PreviewButtonActionPerformed
 
@@ -309,5 +316,8 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private boolean hasChooseFileRun;
+    private FileFormatter formatter;
+    private InitialCleaner cleaner;
     // End of variables declaration//GEN-END:variables
 }
