@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - InterfaceApplication",
+            "request": "launch",
+            "mainClass": "app.InterfaceApplication",
+            "projectName": "GroupProjectCSE360"
+        }
+    ]
+}
