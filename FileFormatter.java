@@ -424,7 +424,6 @@ public class FileFormatter{
             for(int i = 0; i < wordsInLine.length; i++){
                 totalWhitespace -= wordsInLine[i].length();
             }
-            System.out.println("Total whitespace " + totalWhitespace);
 
             spacesBetween = (totalWhitespace) / (wordsInLine.length - 1);
 
@@ -437,7 +436,6 @@ public class FileFormatter{
                 toReturn.append(wordsInLine[i]);
                 toReturn.append(spaces);
             }
-            System.out.println(toReturn.toString());
             return toReturn.toString();
         }
         
@@ -465,7 +463,6 @@ public class FileFormatter{
     //will write output buffer to file of specified filepath
     public void write_to_file(String newFilePath){
 
-        newFilePath = "FormattedOutput.txt";
             try{                
                 File outFile = new File(newFilePath);
                 FileWriter fw = new FileWriter(outFile);

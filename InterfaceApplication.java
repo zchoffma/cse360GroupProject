@@ -265,6 +265,15 @@ public class InterfaceApplication extends javax.swing.JFrame  {
     private void SaveFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFileButtonActionPerformed
         // TODO add your handling code here:
         //---------------------------------Save File button
+        JFileChooser chooser = new JFileChooser();
+        //chooser.setFileFilter(new FileTypeFilter(".txt", "Text File"));
+        chooser.showSaveDialog(null);
+        File file = chooser.getSelectedFile();
+        String filePath = file.getAbsolutePath();
+        if(!(filePath.substring(filePath.length() - 4, filePath.length()).compareTo(".txt") == 0)){
+            filePath = filePath + ".txt";
+        }
+        this.formatter.write_to_file(filePath);
     }//GEN-LAST:event_SaveFileButtonActionPerformed
 
     private void PreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewButtonActionPerformed
