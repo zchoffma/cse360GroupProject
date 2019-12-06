@@ -18,7 +18,7 @@ import java.lang.StringBuilder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-public class InitialCleaner extends InterfaceApplication{
+public class InitialCleaner{
     private File fo;
     private FileReader fr;
     private BufferedReader br;
