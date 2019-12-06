@@ -280,7 +280,9 @@ public class FileFormatter{
 
 
         for(int i = 0; i < oneColumnBuffer.size(); i++){
+            //System.out.println(oneColumnBuffer.get(i));----------------------------------------------
             oneColumnBuffer.set(i, justifyLine(oneColumnBuffer.get(i), 80));
+            //System.out.println(oneColumnBuffer.get(i));----------------------------------------------
             this.outputFileBuffer.append(oneColumnBuffer.get(i));
             this.outputFileBuffer.append("\n");
         }
@@ -350,13 +352,8 @@ public class FileFormatter{
         }
     }
 
-
-
-
-
-
+  
     
-    //Written by Kobe
     public String justifyLine(String s, int length)
     {
     	int spaceCount = 0; 
@@ -364,33 +361,33 @@ public class FileFormatter{
     	StringBuilder temp = new StringBuilder();
     	String newString = "";
 
+        //Strings are automatically left justified
+        if(this.currentJustFlag == JustificationFlags.L){
+            return s;
+        }
+
+        //Right Justify working
     	if(this.currentJustFlag == JustificationFlags.R)
     	{
-
     		int end = s.length()-1;
-    		int beginningPadSize = length - s.length();
-
     		while(s.charAt(end) == spaceChar)
     		{
     			spaceCount++;
     			end--;
-    		}
-
-            //Zach currently fixing right justify VVV
-            //String tempString = s.substring((s.length()-spaceCount), s.length());
-
-    		//s=s.trim()
-    		temp = new StringBuilder(s); 
-
-    		for(int i = 0; i<beginningPadSize;i++)
-    		{
-    			temp.insert(0,spaceChar);
-    		}
-    		spaceCount = 0; 
-    		newString = temp.toString();
+            }
+            String tempString = s.substring(0, s.length() - spaceCount);
+            temp = new StringBuilder();
+            //cheap fix
+            while(spaceCount != 0){
+                temp.append(" ");
+                spaceCount--;
+            }
+            temp.append(tempString);
+            return temp.toString();
     	}
 
 
+        //working 
     	if(this.currentJustFlag == JustificationFlags.C)
     	{
     		int padSize = length - s.length();
@@ -400,6 +397,27 @@ public class FileFormatter{
     	    s = String.format("%-" + length  + "s", s);
             newString = s; 
 
+            int end = s.length()-1;
+    		while(s.charAt(end) == spaceChar)
+    		{
+    			spaceCount++;
+    			end--;
+            }
+            //extract words with indent
+            String tempString = s.substring(0, s.length() - spaceCount);
+            temp = new StringBuilder();
+            int halfSpaces = spaceCount / 2; //auto floors when casting
+            while(spaceCount != (halfSpaces)){
+                temp.append(" ");
+                spaceCount--;
+            }
+            temp.append(tempString);
+            while(spaceCount != 0){
+                temp.append(" ");
+                spaceCount--;
+            }
+
+            return temp.toString();
     	}
 
     	if(this.currentJustFlag == JustificationFlags.T)
